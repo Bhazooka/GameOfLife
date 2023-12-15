@@ -8,7 +8,6 @@ COLOUR_DIE_NEXT = (170, 170, 170)
 COLOUR_ALIVE_NEXT = (255, 255, 255)
 
 # you can define your own size as a constant variable
-
 def update(screen, cells, size, with_progress=False):
     updated_cells = np.zeros((cells.shape[0], cells.shape[1]))
 
