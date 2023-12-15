@@ -4,37 +4,37 @@ import numpy as np
 
 COLOUR_BG = (10,10,10)
 COLOUR_GRID = (40, 40, 40)
-COLOUR_DIE_NEXT = (170, 170, 170)  #transition from alive to dying. By the rules
+COLOUR_DIE_NEXT = (170, 170, 170)                                      #transition from alive to dying. By the rules
 COLOUR_ALIVE_NEXT = (255, 255, 255) 
+                                    # you can define your own size as a constant variable
 
-# you can define your own size as a constant variable
 def update(screen, cells, size, with_progress=False):
     updated_cells = np.zeros((cells.shape[0], cells.shape[1]))
 
-#game rules
+#game rules:        
     for row, col in np.ndindex(cells.shape):   
-        alive = np.sum(cells[row-1: row+2, col-1: col+2]) - cells[row,col]  #numpy array,
+        alive = np.sum(cells[row-1: row+2, col-1: col+2]) - cells[row,col]  #numpy array
         color = COLOUR_BG if cells[row, col] == 0 else COLOUR_ALIVE_NEXT
 
-        if cells[row, col] == 1:
-            if alive < 2 or alive > 3:
+        if cells[row, col] == 1:                                        #if the cell has state 1 (Alive == true)
+            if alive < 2 or alive > 3:                                  #if its alone or has one neighbor...
                 if with_progress:
-                    color = COLOUR_DIE_NEXT
-            elif 2 <= alive <= 3:
-                updated_cells[row, col] = 1
+                    color = COLOUR_DIE_NEXT                             #...it dies
+
+            elif 2 <= alive <= 3:                                       #if it has 2 or 3 neighbour...
+                updated_cells[row, col] = 1                             #...cell lives
                 if with_progress:
-                    colour = COLOUR_ALIVE_NEXT
+                    colour = COLOUR_ALIVE_NEXT                          #update colour of cell to alive
         
         else:
-            if alive == 3:
-                updated_cells[row, col] = 1
+            if alive == 3:                                              #if theres 3 alive cells...
+                updated_cells[row, col] = 1                             #...this cell comes to life
                 if with_progress:
                     colour = COLOUR_ALIVE_NEXT
 
-        pygame.draw.rect(screen, color, (col * size, row * size, size - 1, size - 1))
+        pygame.draw.rect(screen, color, (col * size, row * size, size - 1, size - 1))   #
 
     return updated_cells
-
 
 def main():
     pygame.init()
@@ -54,14 +54,17 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    running = not running
+            #
+            elif event.type == pygame.KEYDOWN:                     
+                if event.key == pygame.K_SPACE:                     
+                    running = not running                           #press space to run or pause game
                     update(screen, cells, 10)
                     pygame.display.update()
-            if pygame.mouse.get_pressed()[0]:
-                pos = pygame.mouse.get_pos()
-                cells[pos[1] // 10, pos[0] // 10] = 1
+
+            #Mouse press to set alive cells
+            if pygame.mouse.get_pressed()[0]:                       #if the mouse is pressed
+                pos = pygame.mouse.get_pos()                        #get position of where its pressed
+                cells[pos[1] // 10, pos[0] // 10] = 1               #make cell alive (set cell to 1)
                 update(screen, cells, 10)
                 pygame.display.update()
 
