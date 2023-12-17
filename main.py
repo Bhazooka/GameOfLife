@@ -64,7 +64,7 @@ def main():
             #Mouse press to set alive cells
             if pygame.mouse.get_pressed()[0]:                       #if the mouse is pressed
                 pos = pygame.mouse.get_pos()                        #get position of where its pressed
-                cells[pos[1] // 10, pos[0] // 10] = 1               #make cell alive (set cell to 1)
+                cells[pos[1] // 10, pos[0] // 10] = 1               #make cell alive (set cell to 1)        #pos is a tuple (x,y)
                 update(screen, cells, 10)
                 pygame.display.update()
 
